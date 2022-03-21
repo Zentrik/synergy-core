@@ -1,10 +1,10 @@
 name: Windows
 
 on:
+  release:
   push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
+  workflow_dispatch:
 
 jobs:
   build-arch64:
@@ -66,6 +66,11 @@ jobs:
         cmake -DCMAKE_BUILD_TYPE=Release ..
         . ./version
         msbuild synergy-core.sln /p:Configuration=Release
+    
+    - uses: actions/upload-artifact@v2
+      with:
+        name: windows
+        path: build/bin/Release/*
 
     - name: Run unit test
       run: .\build\bin\Release\unittests.exe
